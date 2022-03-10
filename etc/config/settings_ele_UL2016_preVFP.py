@@ -7,18 +7,8 @@ cutpass90 = '(( abs(probe_sc_eta) < 0.8 && probe_Ele_nonTrigMVA > %f ) ||  ( abs
 
 # flag to be Tested
 flags = {
-    'passingVeto94XV2'    : '(passingVeto94XV2   == 1)',
-    'passingLoose94XV2'   : '(passingLoose94XV2  == 1)',
-    'passingMedium94XV2'  : '(passingMedium94XV2 == 1)',
-    'passingTight94XV2'   : '(passingTight94XV2  == 1)',
-    'passingMVA94Xwp80isoV2' : '(passingMVA94Xwp80isoV2 == 1)',
-    'passingMVA94Xwp90isoV2' : '(passingMVA94Xwp90isoV2 == 1)',
-    'passingMVA94Xwp80noisoV2' : '(passingMVA94Xwp80noisoV2 == 1)',
-    'passingMVA94Xwp90noisoV2' : '(passingMVA94Xwp90noisoV2 == 1)',
-    'passingMVA94XwpLisoV2'    : '(passingMVA94XwpLisoV2 == 1)',
-    'passingMVA94XwpLnoisoV2'  : '(passingMVA94XwpLnoisoV2 == 1)',
-    'passingMVA94XwpHZZisoV2'  : '(passingMVA94XwpHZZisoV2 == 1)',
-    }
+    "passingMVA94Xwp90noisoV2": "(passingMVA94Xwp90noisoV2 == 1)"
+}
 
 baseOutDir = 'results/UL2016_preVFP/tnpEleID/'
 
@@ -38,7 +28,6 @@ samplesDef = {
 }
 
 ## can add data sample easily
-samplesDef['data'].add_sample( tnpSamples.UL2016_preVFP['data_Run2016B_ver2'] )
 samplesDef['data'].add_sample( tnpSamples.UL2016_preVFP['data_Run2016C'] )
 samplesDef['data'].add_sample( tnpSamples.UL2016_preVFP['data_Run2016D'] )
 samplesDef['data'].add_sample( tnpSamples.UL2016_preVFP['data_Run2016E'] )
@@ -81,18 +70,15 @@ if not samplesDef['tagSel'] is None: samplesDef['tagSel'].set_puTree('/eos/cms/s
 ########## bining definition  [can be nD bining]
 #############################################################
 biningDef = [
-   { 'var' : 'el_sc_eta' , 'type': 'float', 'bins': [-2.5,-2.0,-1.566,-1.4442, -0.8, 0.0, 0.8, 1.4442, 1.566, 2.0, 2.5] },
-#   { 'var' : 'el_pt' , 'type': 'float', 'bins': [10,20,35,50,100,500] },
-   { 'var' : 'el_pt' , 'type': 'float', 'bins': [10,20,35,50,100,200,500] },
-
-
+   { 'var' : 'el_sc_eta' , 'type': 'float', 'bins': [-2.5,-2.0,-1.566,-1.4442, -1.0, 0.0, 1.0, 1.4442, 1.566, 2.0, 2.5] },
+   { 'var' : 'el_pt' , 'type': 'float', 'bins': [10,20,30,40,50,2000] },
 ]
 
 #############################################################
 ########## Cuts definition for all samples
 #############################################################
 ### cut
-cutBase   = 'tag_Ele_pt > 35 && abs(tag_sc_eta) < 2.17 && el_q*tag_Ele_q < 0'
+cutBase   = 'tag_Ele_pt > 35 && abs(tag_sc_eta) < 2.17 && el_q*tag_Ele_q < 0 && el_miniIsoAll_fall17 / el_pt < 0.1'
 
 # can add addtionnal cuts for some bins (first check bin number using tnpEGM --checkBins)
 #LS: we removed the met cuts cause JEC not ready for UL2016
