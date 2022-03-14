@@ -2,12 +2,9 @@
 ########## General settings
 #############################################################
 # flag to be Tested
-cutpass80 = '(( abs(probe_sc_eta) < 0.8 && probe_Ele_nonTrigMVA > %f ) ||  ( abs(probe_sc_eta) > 0.8 && abs(probe_sc_eta) < 1.479&& probe_Ele_nonTrigMVA > %f ) || ( abs(probe_sc_eta) > 1.479 && probe_Ele_nonTrigMVA > %f ) )' % (0.967083,0.929117,0.726311)
-cutpass90 = '(( abs(probe_sc_eta) < 0.8 && probe_Ele_nonTrigMVA > %f ) ||  ( abs(probe_sc_eta) > 0.8 && abs(probe_sc_eta) < 1.479&& probe_Ele_nonTrigMVA > %f ) || ( abs(probe_sc_eta) > 1.479 && probe_Ele_nonTrigMVA > %f ) )' % (0.913286,0.805013,0.358969)
-
-# flag to be Tested
 flags = {
-    'passingMVA94Xwp90noisoV2' : '(passingMVA94Xwp90noisoV2 == 1)',
+    'miniIsoTight' : '( el_miniIsoAll_fall17 < 0.1 )',
+    'miniIsoLoose' : '( el_miniIsoAll_fall17 < 0.4 )'
 }
 
 baseOutDir = 'results/UL2017/tnpEleID/'
@@ -70,16 +67,18 @@ if not samplesDef['tagSel'] is None: samplesDef['tagSel'].set_puTree('/eos/cms/s
 ########## bining definition  [can be nD bining]
 #############################################################
 biningDef = [
-   { 'var' : 'el_sc_eta' , 'type': 'float', 'bins': [-2.5,-2.0,-1.566,-1.4442, -1.0, 0.0, 1.0, 1.4442, 1.566, 2.0, 2.5] },
-   { 'var' : 'el_pt' , 'type': 'float', 'bins': [10,20,30,40,50,2000] },
+   { 'var' : 'el_sc_eta' , 'type': 'float', 'bins': [ -2.5, -2.0, -1.566, -1.4442, -0.8, 0.0, 0.8, 1.4442, 1.566, 2.0, 2.5 ] },
+   { 'var' : 'el_pt' , 'type': 'float', 'bins': [10,20,35,50,100,200,500] },
 ]
 
 #############################################################
 ########## Cuts definition for all samples
 #############################################################
 ### cut
-cutBase   = 'tag_Ele_pt > 35 && abs(tag_sc_eta) < 2.17 && el_q*tag_Ele_q < 0 && el_miniIsoAll_fall17 / el_pt < 0.1'
-
+cutBase = {
+  "miniIsoTight": 'tag_Ele_pt > 35 && abs(tag_sc_eta) < 2.17 && el_q*tag_Ele_q < 0 && passingMVA94Xwp90noisoV2 == 1',
+  "miniIsoLoose": 'tag_Ele_pt > 35 && abs(tag_sc_eta) < 2.17 && el_q*tag_Ele_q < 0 && passingMVA94XwpLoosenoisoV2 == 1'
+}
 # can add addtionnal cuts for some bins (first check bin number using tnpEGM --checkBins)
 #LS: we removed the met cuts cause JEC not ready for UL2017
 #additionalCuts = { 
@@ -94,21 +93,21 @@ cutBase   = 'tag_Ele_pt > 35 && abs(tag_sc_eta) < 2.17 && el_q*tag_Ele_q < 0 && 
 #    8 : 'tag_Ele_trigMVA > 0.92 && sqrt( 2*event_met_pfmet*tag_Ele_pt*(1-cos(event_met_pfphi-tag_Ele_phi))) < 45',
 #    9 : 'tag_Ele_trigMVA > 0.92 && sqrt( 2*event_met_pfmet*tag_Ele_pt*(1-cos(event_met_pfphi-tag_Ele_phi))) < 45'
 #}
-additionalCuts = { 
-    0 : 'tag_Ele_trigMVA > 0.92 ',
-    1 : 'tag_Ele_trigMVA > 0.92 ',
-    2 : 'tag_Ele_trigMVA > 0.92 ',
-    3 : 'tag_Ele_trigMVA > 0.92 ',
-    4 : 'tag_Ele_trigMVA > 0.92 ',
-    5 : 'tag_Ele_trigMVA > 0.92 ',
-    6 : 'tag_Ele_trigMVA > 0.92 ',
-    7 : 'tag_Ele_trigMVA > 0.92 ',
-    8 : 'tag_Ele_trigMVA > 0.92 ',
-    9 : 'tag_Ele_trigMVA > 0.92 '
-}
+#additionalCuts = { 
+#    0 : 'tag_Ele_trigMVA > 0.92 ',
+#    1 : 'tag_Ele_trigMVA > 0.92 ',
+#    2 : 'tag_Ele_trigMVA > 0.92 ',
+#    3 : 'tag_Ele_trigMVA > 0.92 ',
+#    4 : 'tag_Ele_trigMVA > 0.92 ',
+#    5 : 'tag_Ele_trigMVA > 0.92 ',
+#    6 : 'tag_Ele_trigMVA > 0.92 ',
+#    7 : 'tag_Ele_trigMVA > 0.92 ',
+#    8 : 'tag_Ele_trigMVA > 0.92 ',
+#    9 : 'tag_Ele_trigMVA > 0.92 '
+#}
 
 #### or remove any additional cut (default)
-#additionalCuts = None
+additionalCuts = None
 
 #############################################################
 ########## fitting params to tune fit by hand if necessary

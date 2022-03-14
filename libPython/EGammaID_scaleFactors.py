@@ -243,8 +243,10 @@ def EffiGraph1D(effDataList, effMCList, sfList ,nameout, xAxis = 'pT', yAxis = '
 
     c.Print(nameout)
     listName = nameout.split('/')
-    for iext in ["pdf","C","png"]:
-        c.SaveAs(nameout.replace('egammaEffi.txt_egammaPlots',listName[-6].replace('tnp','')+'_SFvs'+xAxis+'_'+listName[-3]).replace('pdf',iext))
+    for iext in ["pdf","png"]: # "C"
+	saveName = nameout.replace('egammaEffi.txt_egammaPlots',listName[-6].replace('tnp','')+'_SFvs'+xAxis+'_'+listName[-3]).replace('pdf',iext)
+	print( saveName )
+        c.SaveAs( saveName )
 
     return listOfTGraph2
 
@@ -322,8 +324,8 @@ def doEGM_SFs(filein, lumi, axis = ['pT','eta'] ):
     print " ------------------------------- "
 
     customEtaBining = []
-    customEtaBining.append( (0.000,0.800))
-    customEtaBining.append( (0.800,1.444))
+    customEtaBining.append( (0.000,1.000))
+    customEtaBining.append( (1.000,1.4442))
 #    customEtaBining.append( (1.444,1.566))
     customEtaBining.append( (1.566,2.000))
     customEtaBining.append( (2.000,2.500))
@@ -334,19 +336,19 @@ def doEGM_SFs(filein, lumi, axis = ['pT','eta'] ):
     cDummy.Print( pdfout + "[" )
 
 
-    EffiGraph1D( effGraph.pt_1DGraph_list_customEtaBining(customEtaBining, False ) , #eff Data
+    EffiGraph1D( effGraph.pt_1DGraph_list( False ) , #eff Data
                  None, 
-                 effGraph.pt_1DGraph_list_customEtaBining(customEtaBining, True ) , #SF
+                 effGraph.pt_1DGraph_list( True ) , #SF
                  pdfout,
                  xAxis = axis[0], yAxis = axis[1] )
 #EffiGraph1D( effGraph.pt_1DGraph_list_customEtaBining(customEtaBining,False) , 
 #             effGraph.pt_1DGraph_list_customEtaBining(customEtaBining,True)   , False, pdfout )
-#    EffiGraph1D( effGraph.eta_1DGraph_list(False), effGraph.eta_1DGraph_list(True), True , pdfout )
+#    EffiGraph1D( effGraph.eta_1DGraph_list(False), effGraph.eta_1DGraph_list(True), #True , pdfout )
     listOfSF1D = EffiGraph1D( effGraph.eta_1DGraph_list( typeGR =  0 ) , # eff Data
-                              effGraph.eta_1DGraph_list( typeGR = -1 ) , # eff MC
-                              effGraph.eta_1DGraph_list( typeGR = +1 ) , # SF
-                              pdfout, 
-                              xAxis = axis[1], yAxis = axis[0] )
+                   effGraph.eta_1DGraph_list( typeGR = -1 ) , # eff MC
+                   effGraph.eta_1DGraph_list( typeGR = +1 ) , # SF
+                   pdfout, 
+                   xAxis = axis[1], yAxis = axis[0] )
 
     h2EffData = effGraph.ptEtaScaleFactor_2DHisto(-3)
     h2EffMC   = effGraph.ptEtaScaleFactor_2DHisto(-2)

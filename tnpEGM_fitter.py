@@ -57,7 +57,7 @@ print outputDirectory
 ##### Create (check) Bins
 ####################################################################
 if args.checkBins:
-    tnpBins = tnpBiner.createBins(tnpConf.biningDef,tnpConf.cutBase)
+    tnpBins = tnpBiner.createBins(tnpConf.biningDef,tnpConf.cutBase[args.flag])
     tnpBiner.tuneCuts( tnpBins, tnpConf.additionalCuts )
     for ib in range(len(tnpBins['bins'])):
         print tnpBins['bins'][ib]['name']
@@ -68,7 +68,7 @@ if args.createBins:
     if os.path.exists( outputDirectory ):
             shutil.rmtree( outputDirectory )
     os.makedirs( outputDirectory )
-    tnpBins = tnpBiner.createBins(tnpConf.biningDef,tnpConf.cutBase)
+    tnpBins = tnpBiner.createBins(tnpConf.biningDef,tnpConf.cutBase[args.flag])
     tnpBiner.tuneCuts( tnpBins, tnpConf.additionalCuts )
     pickle.dump( tnpBins, open( '%s/bining.pkl'%(outputDirectory),'wb') )
     print 'created dir: %s ' % outputDirectory
